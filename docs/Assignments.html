@@ -397,20 +397,39 @@ div.tocify {
 <div id="problem-6" class="section level3">
 <h3>Problem 6</h3>
 <p>Please summarize <code>Murder</code> quantitatively. What are its mean and median? What is the difference between mean and median? What is a quartile, and why do you think R gives you the 1st Qu. and 3rd Qu.?</p>
+<pre class="r"><code>mean(dat$Murder)</code></pre>
+<pre><code>## [1] 7.788</code></pre>
+<pre class="r"><code>median(dat$Murder)</code></pre>
+<pre><code>## [1] 7.25</code></pre>
+<pre class="r"><code>quantile(dat$Murder)</code></pre>
+<pre><code>##     0%    25%    50%    75%   100% 
+##  0.800  4.075  7.250 11.250 17.400</code></pre>
+<p><em>Answer: Mean and median are both measures of center; however, the mean is the average value of a data set, which is calculated by adding all of the values and dividing by the number of total data points, and the mean is calculated by finding the middle value when the data set is arranged in order. A quartile is essentially the same as a median, but with 25% and 75% of the data, rather than 50%. R gives you quartiles in order to help visualize the data and see if it is distributed symmetrically.</em></p>
 </div>
 <div id="problem-7" class="section level3">
 <h3>Problem 7</h3>
 <p>Repeat the same steps you followed for <code>Murder</code>, for the variables <code>Assault</code> and <code>Rape</code>. Now plot all three histograms together. You can do this by using the command <code>par(mfrow=c(3,1))</code> and then plotting each of the three.</p>
+<pre class="r"><code>hist(dat$Assault, xlab = &quot;Assault Arrests per 100,000 People&quot;, main = &quot;Frequency of Assault Arrest Rates in the US&quot;, col = &quot;Blue&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-9-1.png" width="480" /></p>
+<pre class="r"><code>hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;Frequency of Rape Arrest Rates in the US&quot;, col = &quot;Red&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-9-2.png" width="480" /></p>
+<pre class="r"><code>par(mfrow=c(3,1))
+hist(dat$Murder, xlab = &quot;Murder Arrests per 100,000 People&quot;, main = &quot;Frequency of Murder Arrest Rates in the US&quot;, col = &quot;purple&quot;)
+hist(dat$Assault, xlab = &quot;Assault Arrests per 100,000 People&quot;, main = &quot;Frequency of Assault Arrest Rates in the US&quot;, col = &quot;Blue&quot;)
+hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;Frequency of Rape Arrest Rates in the US&quot;, col = &quot;Red&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-10-1.png" width="480" /></p>
 <p>What does the command par do, in your own words (you can look this up by asking R <code>?par</code>)?</p>
-<p>Answer:</p>
+<p><em>Answer: The par command sets parameters for graph and allows us to tell R to compare additional variables within the data set.</em></p>
 <p>What can you learn from plotting the histograms together?</p>
-<p>Answer:</p>
+<p><em>Answer: We can learn that assault arrest rates per 100,000 people are far higher than the arrest rates for murder and rape by comparing the x axis of all three histograms. Additionally, while the frequency of arrest rates for rape and murder skew relatively right, the frequency of assault arrest rates are more uniform or have closer to a normal distribution.</em></p>
 </div>
 <div id="problem-8" class="section level3">
 <h3>Problem 8</h3>
 <p>In the console below (not in text), type <code>install.packages("maps")</code> and press Enter, and then type <code>install.packages("ggplot2")</code> and press Enter. This will install the packages so you can load the libraries.</p>
 <p>Run this code:</p>
-<pre class="r"><code>library(&#39;maps&#39;) 
+<pre class="r"><code>#install.packages(&quot;maps&quot;)
+#install.packages(&quot;ggplot2&quot;)
+library(&#39;maps&#39;) 
 library(&#39;ggplot2&#39;) 
 
 ggplot(dat, aes(map_id=state, fill=Murder)) + 

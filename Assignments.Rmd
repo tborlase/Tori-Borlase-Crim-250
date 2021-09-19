@@ -98,24 +98,37 @@ Please summarize `Murder` quantitatively. What are its mean and median? What is 
 
 
 ```{r}
-
+mean(dat$Murder)
+median(dat$Murder)
+quantile(dat$Murder)
 ```
+*Answer: Mean and median are both measures of center; however, the mean is the average value of a data set, which is calculated by adding all of the values and dividing by the number of total data points, and the mean is calculated by finding the middle value when the data set is arranged in order.  A quartile is essentially the same as a median, but with 25% and 75% of the data, rather than 50%. R gives you quartiles in order to help visualize the data and see if it is distributed symmetrically.*
 
 ### Problem 7
 
 Repeat the same steps you followed for `Murder`, for the variables `Assault` and `Rape`. Now plot all three histograms together. You can do this by using the command `par(mfrow=c(3,1))` and then plotting each of the three. 
 
 ```{r, echo = TRUE, fig.width = 5, fig.height = 8}
+hist(dat$Assault, xlab = "Assault Arrests per 100,000 People", main = "Frequency of Assault Arrest Rates in the US", col = "Blue")
+hist(dat$Rape, xlab = "Rape Arrests per 100,000 People", main = "Frequency of Rape Arrest Rates in the US", col = "Red")
+```
+
+```{r, echo = TRUE, fig.width = 5, fig.height = 8}
+par(mfrow=c(3,1))
+hist(dat$Murder, xlab = "Murder Arrests per 100,000 People", main = "Frequency of Murder Arrest Rates in the US", col = "purple")
+hist(dat$Assault, xlab = "Assault Arrests per 100,000 People", main = "Frequency of Assault Arrest Rates in the US", col = "Blue")
+hist(dat$Rape, xlab = "Rape Arrests per 100,000 People", main = "Frequency of Rape Arrest Rates in the US", col = "Red")
 
 ```
 
+
 What does the command par do, in your own words (you can look this up by asking R `?par`)?
 
-Answer:
+*Answer: The par command sets parameters for graph and allows us to tell R to compare additional variables within the data set.*
 
 What can you learn from plotting the histograms together?
 
-Answer:
+*Answer: We can learn that assault arrest rates per 100,000 people are far higher than the arrest rates for murder and rape by comparing the x axis of all three histograms.  Additionally, while the frequency of arrest rates for rape and murder skew relatively right, the frequency of assault arrest rates are more uniform or have closer to a normal distribution.*
   
 ### Problem 8
 
@@ -124,6 +137,8 @@ In the console below (not in text), type `install.packages("maps")` and press En
 Run this code:
 
 ```{r, eval = FALSE, fig.width = 7.5, fig.height = 4}
+#install.packages("maps")
+#install.packages("ggplot2")
 library('maps') 
 library('ggplot2') 
 
