@@ -149,7 +149,23 @@ ggplot(dat, aes(map_id=state, fill=Murder)) +
 
 What does this code do? Explain what each line is doing.
 
-Answer:
+*Answer:*
+
+```{r}
+#install.packages("maps")
+#- This line installs a package that allows for map-drawing based on state names provided within the data.
+#install.packages("ggplot2")
+#- This line installs a package that makes improves the data visualization so that the map is easier to understand.
+#library('maps') 
+#- This line tells R where to find the package to help draw the map
+#library('ggplot2') 
+#- This line tells R where to find the package to help draw the map
+#ggplot(dat, aes(map_id=state, fill=Murder)) + 
+#  geom_map(map=map_data("state")) + 
+#  expand_limits(x=map_data("state")$long, y=map_data("state")$lat)
+#- This line tells R to use a ggplot and to draw information from dat, and then to draw a map with states specifically for the Murder column. It additionally tells R to make the x and y axes coordinate with longitude and lattitude in a US map.
+```
+
 
 $$\\[2in]$$
 

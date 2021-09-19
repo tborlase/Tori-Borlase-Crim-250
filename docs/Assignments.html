@@ -436,7 +436,19 @@ ggplot(dat, aes(map_id=state, fill=Murder)) +
   geom_map(map=map_data(&quot;state&quot;)) + 
   expand_limits(x=map_data(&quot;state&quot;)$long, y=map_data(&quot;state&quot;)$lat)</code></pre>
 <p>What does this code do? Explain what each line is doing.</p>
-<p>Answer:</p>
+<p><em>Answer:</em></p>
+<pre class="r"><code>#install.packages(&quot;maps&quot;)
+#- This line installs a package that allows for map-drawing based on state names provided within the data.
+#install.packages(&quot;ggplot2&quot;)
+#- This line installs a package that makes improves the data visualization so that the map is easier to understand.
+#library(&#39;maps&#39;) 
+#- This line tells R where to find the package to help draw the map
+#library(&#39;ggplot2&#39;) 
+#- This line tells R where to find the package to help draw the map
+#ggplot(dat, aes(map_id=state, fill=Murder)) + 
+#  geom_map(map=map_data(&quot;state&quot;)) + 
+#  expand_limits(x=map_data(&quot;state&quot;)$long, y=map_data(&quot;state&quot;)$lat)
+#- This line tells R to use a ggplot and to draw information from dat, and then to draw a map with states specifically for the Murder column. It additionally tells R to make the x and y axes coordinate with longitude and lattitude in a US map.</code></pre>
 <p><span class="math display">\[\\[2in]\]</span></p>
 </div>
 </div>
