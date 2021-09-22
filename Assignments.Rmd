@@ -1,17 +1,22 @@
 ---
 title: "Assignments"
 output:
+  pdf_document:
+    toc: no
+    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
     collapsed: no
     number_sections: no
     toc_depth: 1
-  pdf_document:
-    toc: no
-    toc_depth: '1'
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+# install.packages("formatR")
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
 
 This page will contain all the assignments you submit for the class.
 
@@ -45,7 +50,7 @@ Answer: Renaming data sets ensures that you do not edit any of your original dat
 
 Use this command to make the state names into a new variable called State. 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 dat$state<-tolower(rownames(USArrests))
 ```
 
@@ -69,20 +74,20 @@ What R Type of variable is it?
 
 
 ```{r}
-typeof("Murder")
+class(dat$Murder)
 ```
-*Answer: In R, the data points in the Murder column are numeric variables. However, the object itself is identified as a character, as seen below*
+*Answer: In R, the data points in the Murder column are numeric variables according to the class() function.*
 
 ### Problem 4
 
-What information is contained in this dataset, in general? What do the numbers mean? 
+What information is contained in this data set, in general? What do the numbers mean? 
 
 ```{r}
 head(dat)
 ?USArrests
 ```
 
-*Answer: Generally, this dataset contains rates for specific crime arrests per 100,000 people, as well as percentages of urban population per state in 1973. The numbers are equivalent to the calculated arrest rates for Murder, Assault, and Rape. The Urban Population numbers are the percentages of the population in each state that live in an urban area.*
+*Answer: Generally, this data set contains rates for specific crime arrests per 100,000 people collected by D.R. McNeil, as well as percentages of urban population per state in 1973. The numbers in the Murder, Assault, and Rape columns are equivalent to the calculated arrest rates for Murder, Assault, and Rape. The Urban Population numbers are the percentages of the population in each state that live in an urban area.*
 
 ### Problem 5
 
@@ -100,11 +105,9 @@ Please summarize `Murder` quantitatively. What are its mean and median? What is 
 
 
 ```{r}
-mean(dat$Murder)
-median(dat$Murder)
-quantile(dat$Murder)
+summary(dat$Murder)
 ```
-*Answer: The mean is 7.788.  The median is 7.25.  Q1 is 4.075 and Q3 is 11.250. Mean and median are both measures of center; however, the mean is the average value of a data set, which is calculated by adding all of the values and dividing by the number of total data points, and the mean is calculated by finding the middle value when the data set is arranged in order.  A quartile is essentially the same as a median, but with 25% and 75% of the data, rather than 50%. R gives you quartiles in order to help visualize the data and see if it is distributed symmetrically.*
+*Answer: The mean is 7.788.  The median is 7.250.  Q1 is 4.075 and Q3 is 11.250. The minimum value is .800 and the maximum value is 17.400. Mean and median are both measures of center; however, the mean is the average value of a data set, which is calculated by adding all of the values and dividing by the number of total data points, and the mean is calculated by finding the middle value when the data set is arranged in order.  A quartile is essentially the same as a median, but with 25% and 75% of the data, rather than 50%. This means that 25% of the data in a data set is below the 1st quartile, 50% is below the second quartile (the median), and 75% is below the 3rd quartile. R gives you quartiles in order to help visualize the data and see if it is distributed symmetrically, and only gives you quartiles 1 and 3 because the median is the 2nd quartile.*
 
 ### Problem 7
 
@@ -112,8 +115,22 @@ Repeat the same steps you followed for `Murder`, for the variables `Assault` and
 
 ```{r, echo = TRUE, fig.width = 5, fig.height = 8}
 hist(dat$Assault, xlab = "Assault Arrests per 100,000 People", main = "Frequency of Assault Arrest Rates in the US", col = "Blue")
+```
+
+```{r}
+summary(dat$Assault)
+```
+*Answer: The mean is 170.8.  The median is 159.0.  Q1 is 109.0 and Q3 is 249.0. The minimum value is 45.0 and the maximum value is 337.0.*
+
+```{r}
 hist(dat$Rape, xlab = "Rape Arrests per 100,000 People", main = "Frequency of Rape Arrest Rates in the US", col = "Red")
 ```
+
+```{r}
+summary(dat$Rape)
+```
+*Answer: The mean is 21.23.  The median is 20.10.  Q1 is 15.07 and Q3 is 26.18. The minimum value is 7.30 and the maximum value is 46.00.*
+
 
 ```{r, echo = TRUE, fig.width = 5, fig.height = 8}
 par(mfrow=c(3,1))
@@ -126,11 +143,11 @@ hist(dat$Rape, xlab = "Rape Arrests per 100,000 People", main = "Frequency of Ra
 
 What does the command par do, in your own words (you can look this up by asking R `?par`)?
 
-*Answer: The par command sets parameters for graphs, changes how they are displayed, and allows us to tell R to compare additional variables within the data set. The parameters of (1,3) tell it to display them stacked on top of each other, rather than side by side or otherwise.*
+*Answer: The 'par' command sets parameters for graphs, changes how they are displayed, and allows us to tell R to compare additional variables within the data set. 'mfrow' puts things in an array, and the parameters of (1,3) tell it to display them stacked on top of each other, rather than side by side or otherwise.*
 
 What can you learn from plotting the histograms together?
 
-*Answer: We can learn that assault arrest rates per 100,000 people are far higher than the arrest rates for murder and rape by comparing the x axis of all three histograms.  Additionally, while the frequency of arrest rates for rape and murder skew relatively right, the frequency of assault arrest rates are more uniform or have closer to a normal distribution.Comparing and plotting them together can generally help us compare distributions overall*
+*Answer: We can learn that assault arrest rates per 100,000 people are far higher than the arrest rates for murder and rape by comparing the x axis of all three histograms. Additionally, while the frequency of arrest rates for rape and murder skew relatively right and are unimodal, the frequency of assault arrest rates is bimodal. Comparing and plotting them together can generally help us visually compare distributions overall.*
   
 ### Problem 8
 
@@ -138,7 +155,7 @@ In the console below (not in text), type `install.packages("maps")` and press En
 
 Run this code:
 
-```{r, eval = FALSE, fig.width = 7.5, fig.height = 4}
+```{r, eval = TRUE, fig.width = 7.5, fig.height = 4}
 #install.packages("maps")
 #install.packages("ggplot2")
 library('maps') 
@@ -165,7 +182,7 @@ What does this code do? Explain what each line is doing.
 #ggplot(dat, aes(map_id=state, fill=Murder)) + 
 #  geom_map(map=map_data("state")) + 
 #  expand_limits(x=map_data("state")$long, y=map_data("state")$lat)
-#- This line tells R to use ggplot and to draw information from dat, and then to draw a map with states, the new variable that we created, specifically using numbers from the Murder column. It additionally tells R to make the x and y axes and limits coordinate with longitude and latitude in a US map.
+#- This line tells R to use ggplot and to take information from dat variable 'state', and then to draw a map with US states, specifically using numbers from the Murder column. This line also instructs R to color each state based on the numbers in the 'Murder' column. It additionally tells R to make the x and y axes and limits align with longitude and latitude in a US map.
 ```
 
 
