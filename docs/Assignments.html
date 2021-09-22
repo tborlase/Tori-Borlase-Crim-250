@@ -350,17 +350,17 @@ div.tocify {
 <div id="problem-1" class="section level3">
 <h3>Problem 1</h3>
 <p>Install the datasets package on the console below using <code>install.packages("datasets")</code>. Now load the library.</p>
-<pre class="r"><code>#install.packages(&quot;datasets&quot;)
+<pre class="r"><code># install.packages(&#39;datasets&#39;)
 library(datasets)</code></pre>
 <p><em>Answer: Installed!</em></p>
 <p>Load the USArrests dataset and rename it <code>dat</code>. Note that this dataset comes with R, in the package datasets, so there’s no need to load data from your computer. Why is it useful to rename the dataset?</p>
-<pre class="r"><code>dat&lt;-USArrests</code></pre>
+<pre class="r"><code>dat &lt;- USArrests</code></pre>
 <p>Answer: Renaming data sets ensures that you do not edit any of your original data on accident, and it is also easier to type.</p>
 </div>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
 <p>Use this command to make the state names into a new variable called State.</p>
-<pre class="r"><code>dat$state&lt;-tolower(rownames(USArrests))</code></pre>
+<pre class="r"><code>dat$state &lt;- tolower(rownames(USArrests))</code></pre>
 <p>This dataset has the state names as row names, so we just want to make them into a new variable. We also make them all lower case, because that will help us draw a map later - the map function requires the states to be lower case.</p>
 <p>List the variables contained in the dataset <code>USArrests</code>.</p>
 <pre class="r"><code>names(dat)</code></pre>
@@ -387,13 +387,14 @@ library(datasets)</code></pre>
 ## Arkansas      8.8     190       50 19.5   arkansas
 ## California    9.0     276       91 40.6 california
 ## Colorado      7.9     204       78 38.7   colorado</code></pre>
-<pre class="r"><code>?USArrests</code></pre>
+<pre class="r"><code>`?`(USArrests)</code></pre>
 <p><em>Answer: Generally, this data set contains rates for specific crime arrests per 100,000 people collected by D.R. McNeil, as well as percentages of urban population per state in 1973. The numbers in the Murder, Assault, and Rape columns are equivalent to the calculated arrest rates for Murder, Assault, and Rape. The Urban Population numbers are the percentages of the population in each state that live in an urban area.</em></p>
 </div>
 <div id="problem-5" class="section level3">
 <h3>Problem 5</h3>
 <p>Draw a histogram of <code>Murder</code> with proper labels and title.</p>
-<pre class="r"><code>hist(dat$Murder, xlab = &quot;Murder Arrests per 100,000 People&quot;, main = &quot;Frequency of Murder Arrest Rates in the US&quot;, col = &quot;purple&quot;)</code></pre>
+<pre class="r"><code>hist(dat$Murder, xlab = &quot;Murder Arrests per 100,000 People&quot;,
+    main = &quot;Frequency of Murder Arrest Rates in the US&quot;, col = &quot;purple&quot;)</code></pre>
 <p><img src="Assignments_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="problem-6" class="section level3">
@@ -407,22 +408,27 @@ library(datasets)</code></pre>
 <div id="problem-7" class="section level3">
 <h3>Problem 7</h3>
 <p>Repeat the same steps you followed for <code>Murder</code>, for the variables <code>Assault</code> and <code>Rape</code>. Now plot all three histograms together. You can do this by using the command <code>par(mfrow=c(3,1))</code> and then plotting each of the three.</p>
-<pre class="r"><code>hist(dat$Assault, xlab = &quot;Assault Arrests per 100,000 People&quot;, main = &quot;Frequency of Assault Arrest Rates in the US&quot;, col = &quot;Blue&quot;)</code></pre>
+<pre class="r"><code>hist(dat$Assault, xlab = &quot;Assault Arrests per 100,000 People&quot;,
+    main = &quot;Frequency of Assault Arrest Rates in the US&quot;, col = &quot;Blue&quot;)</code></pre>
 <p><img src="Assignments_files/figure-html/unnamed-chunk-9-1.png" width="480" /></p>
 <pre class="r"><code>summary(dat$Assault)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    45.0   109.0   159.0   170.8   249.0   337.0</code></pre>
 <p><em>Answer: The mean is 170.8. The median is 159.0. Q1 is 109.0 and Q3 is 249.0. The minimum value is 45.0 and the maximum value is 337.0.</em></p>
-<pre class="r"><code>hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;Frequency of Rape Arrest Rates in the US&quot;, col = &quot;Red&quot;)</code></pre>
+<pre class="r"><code>hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;Frequency of Rape Arrest Rates in the US&quot;,
+    col = &quot;Red&quot;)</code></pre>
 <p><img src="Assignments_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>summary(dat$Rape)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    7.30   15.07   20.10   21.23   26.18   46.00</code></pre>
 <p><em>Answer: The mean is 21.23. The median is 20.10. Q1 is 15.07 and Q3 is 26.18. The minimum value is 7.30 and the maximum value is 46.00.</em></p>
-<pre class="r"><code>par(mfrow=c(3,1))
-hist(dat$Murder, xlab = &quot;Murder Arrests per 100,000 People&quot;, main = &quot;Frequency of Murder Arrest Rates in the US&quot;, col = &quot;purple&quot;)
-hist(dat$Assault, xlab = &quot;Assault Arrests per 100,000 People&quot;, main = &quot;Frequency of Assault Arrest Rates in the US&quot;, col = &quot;Blue&quot;)
-hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;Frequency of Rape Arrest Rates in the US&quot;, col = &quot;Red&quot;)</code></pre>
+<pre class="r"><code>par(mfrow = c(3, 1))
+hist(dat$Murder, xlab = &quot;Murder Arrests per 100,000 People&quot;,
+    main = &quot;Frequency of Murder Arrest Rates in the US&quot;, col = &quot;purple&quot;)
+hist(dat$Assault, xlab = &quot;Assault Arrests per 100,000 People&quot;,
+    main = &quot;Frequency of Assault Arrest Rates in the US&quot;, col = &quot;Blue&quot;)
+hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;Frequency of Rape Arrest Rates in the US&quot;,
+    col = &quot;Red&quot;)</code></pre>
 <p><img src="Assignments_files/figure-html/unnamed-chunk-13-1.png" width="480" /></p>
 <p>What does the command par do, in your own words (you can look this up by asking R <code>?par</code>)?</p>
 <p><em>Answer: The ‘par’ command sets parameters for graphs, changes how they are displayed, and allows us to tell R to compare additional variables within the data set. ‘mfrow’ puts things in an array, and the parameters of (1,3) tell it to display them stacked on top of each other, rather than side by side or otherwise.</em></p>
@@ -433,28 +439,27 @@ hist(dat$Rape, xlab = &quot;Rape Arrests per 100,000 People&quot;, main = &quot;
 <h3>Problem 8</h3>
 <p>In the console below (not in text), type <code>install.packages("maps")</code> and press Enter, and then type <code>install.packages("ggplot2")</code> and press Enter. This will install the packages so you can load the libraries.</p>
 <p>Run this code:</p>
-<pre class="r"><code>#install.packages(&quot;maps&quot;)
-#install.packages(&quot;ggplot2&quot;)
-library(&#39;maps&#39;) 
-library(&#39;ggplot2&#39;) 
+<pre class="r"><code># install.packages(&#39;maps&#39;) install.packages(&#39;ggplot2&#39;)
+library(&quot;maps&quot;)
+library(&quot;ggplot2&quot;)
 
-ggplot(dat, aes(map_id=state, fill=Murder)) + 
-  geom_map(map=map_data(&quot;state&quot;)) + 
-  expand_limits(x=map_data(&quot;state&quot;)$long, y=map_data(&quot;state&quot;)$lat)</code></pre>
+ggplot(dat, aes(map_id = state, fill = Murder)) + geom_map(map = map_data(&quot;state&quot;)) +
+    expand_limits(x = map_data(&quot;state&quot;)$long, y = map_data(&quot;state&quot;)$lat)</code></pre>
 <p><img src="Assignments_files/figure-html/unnamed-chunk-14-1.png" width="720" /></p>
 <p>What does this code do? Explain what each line is doing.</p>
 <p><em>Answer:</em></p>
-<pre class="r"><code>#install.packages(&quot;maps&quot;)
+<pre class="r"><code># install.packages(&#39;maps&#39;)
 #- This line installs a package that allows for map-drawing based on state names provided within the data.
-#install.packages(&quot;ggplot2&quot;)
+# install.packages(&#39;ggplot2&#39;)
 #- This line installs a package that makes improves the data visualization so that the map is easier to understand.
-#library(&#39;maps&#39;) 
+# library(&#39;maps&#39;)
 #- This line tells R where to find the package to help draw the map
-#library(&#39;ggplot2&#39;) 
+# library(&#39;ggplot2&#39;)
 #- This line tells R where to find the package to help draw the map
-#ggplot(dat, aes(map_id=state, fill=Murder)) + 
-#  geom_map(map=map_data(&quot;state&quot;)) + 
-#  expand_limits(x=map_data(&quot;state&quot;)$long, y=map_data(&quot;state&quot;)$lat)
+# ggplot(dat, aes(map_id=state, fill=Murder)) +
+# geom_map(map=map_data(&#39;state&#39;)) +
+# expand_limits(x=map_data(&#39;state&#39;)$long,
+# y=map_data(&#39;state&#39;)$lat)
 #- This line tells R to use ggplot and to take information from dat variable &#39;state&#39;, and then to draw a map with US states, specifically using numbers from the Murder column. This line also instructs R to color each state based on the numbers in the &#39;Murder&#39; column. It additionally tells R to make the x and y axes and limits align with longitude and latitude in a US map.</code></pre>
 <p><span class="math display">\[\\[2in]\]</span></p>
 </div>
