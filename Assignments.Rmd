@@ -20,7 +20,6 @@ knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 This page will contain all the assignments you submit for the class.
 
 
-
 # Assignment 1
 
 **Collaborators: Theodora Athanitis and Halle Wasser **
@@ -186,15 +185,16 @@ What does this code do? Explain what each line is doing.
 ```
 
 
+
 # Assignment 2
 
-# Title: Assignment 2
-# Subtitle: Crim 250: Statistics for the Social Sciences
-# Name: Tori Borlase
-# Date: 09/27/2021
+**Collaborators: Theodora Athanitis**
 
 
-Instructions: Copy your code, paste it into a Word document, and turn it into Canvas. You can turn in a .docx or .pdf file. Show any EDA (graphical or non-graphical) you have used to come to this conclusion.
+### Problem 1 
+
+
+*Instructions: Copy your code, paste it into a Word document, and turn it into Canvas. You can turn in a .docx or .pdf file. Show any EDA (graphical or non-graphical) you have used to come to this conclusion.*
 
 
 Problem 1: Load data
@@ -208,87 +208,103 @@ Read the data
 ```{r}
 dat <- read.csv(file = 'dat.nsduh.small.1.csv')
 ```
-# What are the dimensions of the dataset? 
+
+What are the dimensions of the dataset? 
+```{r}
 dim(dat)
+```
 
-#Answer: 171 by 7. 171 rows and 7 columns.
+Answer: 171 by 7. 171 rows and 7 columns.
 
 
-## Problem 2: Variables
+### Problem 2: Variables
 
-# Describe the variables in the dataset.
+Describe the variables in the dataset.
 
+```{r}
 names(dat)
+```
 
-# Answer: The variables in the dataset are mjage, cigage, iralcage, age2, sexatract, speakengl, and irsex. According to the code book, these correspond to how old someone was when they first tried marijuana or hashish, how old someone was when they started smoking cigarettes every day, how old someone was when they first tried alcohol, the final age that someone was determined to be at the time of taking the survey (which was asked multiple times as a consistency check), which statement about sexual orientation best described the respondent's feelings, how well they speak English, and imputation revised gender.
+*Answer: The variables in the dataset are mjage, cigage, iralcage, age2, sexatract, speakengl, and irsex. According to the code book, these correspond to how old someone was when they first tried marijuana or hashish, how old someone was when they started smoking cigarettes every day, how old someone was when they first tried alcohol, the final age that someone was determined to be at the time of taking the survey (which was asked multiple times as a consistency check), which statement about sexual orientation best described the respondent's feelings, how well they speak English, and imputation revised gender.*
 
-# What is this dataset about? Who collected the data, what kind of sample is it, and what was the purpose of generating the data?
+What is this dataset about? Who collected the data, what kind of sample is it, and what was the purpose of generating the data?
 
-# Answer: This dataset is from the 2019 National Survey on Drug Use and Health (NSDUH). Individuals within the Center for Behavioral Health Statistics and Quality collected this data in order to measure the "prevalence and correlates of substance use and mental health issues" in the US. This was a stratified random sample, as they collected data in all 50 states for civilian and non-institutionalized populations.
+*Answer: This dataset is from the 2019 National Survey on Drug Use and Health (NSDUH). Individuals within the Center for Behavioral Health Statistics and Quality collected this data in order to measure the "prevalence and correlates of substance use and mental health issues" in the US. This was a stratified random sample, as they collected data in all 50 states for civilian and non-institutionalized populations.*
   
 
 ## Problem 3: Age and gender
 
-# What is the age distribution of the sample like? Make sure you read the codebook to know what the variable values mean.
+What is the age distribution of the sample like? Make sure you read the codebook to know what the variable values mean.
 
+```{r}
 counts <- table(dat$age2)
 barplot(counts, main="Histogram of Ages of Participants", xlab="Age Category", ylab="Frequency")
+```
 
-# Answer: The age distribution of this sample is skewed left.  However, because the numbers within the data set are not actual ages, but rather a range of ages or individual ages that are coded as numbers 1 through 17, we cannot base our true age distribution off of the numbers that form the labels of the histogram. While it appears that the Final Edited Age is skewed left, this may just be because the upper coded ages contain wider ranges of ages, and the lower coded ages contain only one or two ages.
+*Answer: The age distribution of this sample is skewed left.  However, because the numbers within the data set are not actual ages, but rather a range of ages or individual ages that are coded as numbers 1 through 17, we cannot base our true age distribution off of the numbers that form the labels of the histogram. While it appears that the Final Edited Age is skewed left, this may just be because the upper coded ages contain wider ranges of ages, and the lower coded ages contain only one or two ages.*
 
-# Do you think this age distribution representative of the US population? Why or why  not?
+Do you think this age distribution representative of the US population? Why or why  not?
 
-# No, I do not believe this age distribution is representative of the US population. According to Census data, and other population pyramids that display the distribution of population, there are many more younger people than are represented in this graph, as well as many individuals outside of the scope of the study, such as those under 12, etc. Even though (as I mentioned before) there are multiple ages within certain categories, this data shows many more older individuals compared to teenagers and those in their early twenties, and Census data shows large numbers of those populations.
+*Answer: No, I do not believe this age distribution is representative of the US population. According to Census data, and other population pyramids that display the distribution of population, there are many more younger people than are represented in this graph, as well as many individuals outside of the scope of the study, such as those under 12, etc. Even though (as I mentioned before) there are multiple ages within certain categories, this data shows many more older individuals compared to teenagers and those in their early twenties, and Census data shows large numbers of those populations.*
 
-# Is the sample balanced in terms of gender? If not, are there more females or males?
+Is the sample balanced in terms of gender? If not, are there more females or males?
 
+```{r}
 table(dat$irsex)
+```
 
-# 1 (Male)  2 (Female)
-#    91         80 
-
+ 1 (Male)  2 (Female)
+    91         80 
+```{r}
 counts <- table(dat$irsex)
 barplot(counts, main="Gender Distribution", xlab="Gender", ylab="Frequency", names=c("Male", "Female"))
+```
 
-# The sample is not gender balanced, as there are more males (91) than females (80).  Using a bar chart clearly demonstrates this disparity.
+*Answer: The sample is not gender balanced, as there are more males (91) than females (80).  Using a bar chart clearly demonstrates this disparity.*
 
-# Use this code to draw a stacked bar plot to view the relationship between sex and age. What can you conclude from this plot?
+Use this code to draw a stacked bar plot to view the relationship between sex and age. What can you conclude from this plot?
 
+```{r}
 tab.agesex <- table(dat$irsex, dat$age2)
 barplot(tab.agesex,
         main = "Age and Gender Comparison",
         xlab = "Age Category", ylab = "Frequency",
         legend.text = c("Male", "Female"), xlim = c(0,17),
         beside = FALSE) # Stacked bars (default)
+```
 
-# We can conclude from this plot that for most age categories, there were more males than females. However, for age categories 8, 9, 13, and 15, there appear to be more females or the same number of males and females.
+*Answer: We can conclude from this plot that for most age categories, there were more males than females. However, for age categories 8, 9, 13, and 15, there appear to be more females or the same number of males and females.*
 
 
 ## Problem 4: Substance use
 
-# For which of the three substances included in the data set (marijuana, alcohol, and cigarettes) do individuals tend to use the substance earlier?
+For which of the three substances included in the data set (marijuana, alcohol, and cigarettes) do individuals tend to use the substance earlier?
 
+```{r}
 par(mfrow = c(3,1))
 hist(dat$mjage, main="Histogram of Age of First Marijuana Use", xlab="Age Categories", ylab="Frequency", xlim=c(0,50), ylim=c(0,50), breaks = 20)
 hist(dat$iralcage, main="Histogram of Age of First Alcohol Use", xlab="Age Categories", ylab="Frequency", xlim=c(0,50), ylim=c(0,50), breaks = 20)
 hist(dat$cigage, main="Histogram of Age of Starting to Smoke Cigarettes Daily", xlab="Age Categories", ylab="Frequency", xlim=c(0,50), ylim=c(0,50), breaks = 20)
+```
 
-# Individuals tend to use alcohol earlier, as seen on the histograms.
+*Individuals tend to use alcohol earlier, as seen on the histograms.*
 
 
 ## Problem 5: Sexual attraction
 
-# What does the distribution of sexual attraction look like? Is this what you expected?
+What does the distribution of sexual attraction look like? Is this what you expected?
 
-
+```{r}
 dat1 <- dat[dat$sexatract !=99,]
 counts1 <- table(dat1$sexatract)
 barplot(counts1, main="Sexual Attraction Distribution", xlab="Sexual Attraction Categories", ylab="Frequency", ylim = c(0,150))
+```
 
-# The distribution of sexual attraction is skewed right, which is what I expected, as most people identify as only being attracted to the opposite sex, with fewer people identifying as being attracted to the same sex in any way. This is what I expected because I believe that LGBT+ populations are still a relatively small minority within the US compared to those who are only attracted to the opposite sex.
+*Answer: The distribution of sexual attraction is skewed right, which is what I expected, as most people identify as only being attracted to the opposite sex, with fewer people identifying as being attracted to the same sex in any way. This is what I expected because I believe that LGBT+ populations are still a relatively small minority within the US compared to those who are only attracted to the opposite sex.*
 
-# What is the distribution of sexual attraction by gender? 
+What is the distribution of sexual attraction by gender? 
 
+```{r}
 dat1 <- dat[dat$sexatract !=99,] 
 tab.sexor <- table(dat1$irsex, dat1$sexatract)
 barplot(tab.sexor,
@@ -296,21 +312,25 @@ barplot(tab.sexor,
         xlab = "Sexual Attraction Category", ylab = "Frequency",
         legend.text = c("Male", "Female"), xlim = c(0,7), ylim = c(0,140),
         beside = FALSE) # Stacked bars (default)
+```
 
-# The distribution by gender is also skewed right, but there are more females that identify with statements about being attracted to the same sex in some way, and more males that identify with statements about being attracted to the opposite sex, as can be seen in the stacked bar chart.
+*The distribution by gender is also skewed right, but there are more females that identify with statements about being attracted to the same sex in some way, and more males that identify with statements about being attracted to the opposite sex, as can be seen in the stacked bar chart.*
 
 
 ## Problem 6: English speaking
 
-# What does the distribution of English speaking look like in the sample? Is this what you might expect for a random sample of the US population?
+What does the distribution of English speaking look like in the sample? Is this what you might expect for a random sample of the US population?
 
+```{r}
 counts2 <- table(dat$speakengl)
 barplot(counts2, main="English Language Category Frequency", xlab="English Speaking Categories", ylab="Frequency", ylim = c(0,200))
+```
 
-# This distribution is also skewed right, with most individuals responding that they speak English very well, and less than 50 individuals total saying that the speak English well or not well, and nobody saying they did not speak English at all.  This is similar to the distribution that I would expect in the United States because even though the US has no official language, most people need to speak some English in order to work and live here. However, there are probably more people in the US that speak no English at all, but they just were not able to participate in the survey because it was conducted in English. 
+*This distribution is also skewed right, with most individuals responding that they speak English very well, and less than 50 individuals total saying that the speak English well or not well, and nobody saying they did not speak English at all.  This is similar to the distribution that I would expect in the United States because even though the US has no official language, most people need to speak some English in order to work and live here. However, there are probably more people in the US that speak no English at all, but they just were not able to participate in the survey because it was conducted in English.* 
 
-# Are there more English speaker females or males?
+Are there more English speaker females or males?
 
+```{r}
 table(dat$irsex, dat$speakengl)
 tab.sexor <- table(dat$irsex, dat$speakengl)
 barplot(tab.sexor,
@@ -318,8 +338,172 @@ barplot(tab.sexor,
         xlab = "English Ability Category", ylab = "Frequency",
         legend.text = c("Male", "Female"), xlim = c(0,4), ylim = c(0,200),
         beside = FALSE) # Stacked bars (default)
+```
 
-# There are more male English speakers than female English speakers, but that might also be due to the fact that there are more males than females within the data set to begin with.
+*There are more male English speakers than female English speakers, but that might also be due to the fact that there are more males than females within the data set to begin with.*
+
+
+
+# Exam 1
+
+
+Instructions
+
+a. Create a folder in your computer (a good place would be under Crim 250, Exams). 
+
+b. Download the dataset from the Canvas website (fatal-police-shootings-data.csv) onto that folder, and save your Exam 1.Rmd file in the same folder.
+
+c. Download the README.md file. This is the codebook. 
+
+d. Load the data into an R data frame.
+```{r}
+setwd("/Users/toriborlase/Desktop/University of Pennsylvania/Fall 2021/CRIM 250/Tori-Borlase-Crim-250")
+dat<-read.csv(file = 'fatal-police-shootings-data.csv')
+```
+
+
+### Problem 1 (10 points)
+
+a. Describe the dataset. This is the source: https://github.com/washingtonpost/data-police-shootings . Write two sentences (max.) about this.
+
+*This dataset was collected by the Washington Post and contains records of every fatal shooting by a police officer in the U.S. since January 1, 2015. The data includes names, dates, manner of death, if that individual was armed, their age, gender, race, location, as well as other general factors, and an ID number of each individual who was victimized according to the criteria established by the Washington Post.*
+
+b. How many observations are there in the data frame?
+```{r}
+dim(dat)
+```
+
+*There are 6594 observations in the data set, as well as 17 variables.*
+
+c. Look at the names of the variables in the data frame. Describe what "body_camera", "flee", and "armed" represent, according to the codebook. Again, only write one sentence (max) per variable.
+```{r}
+names(dat)
+```
+
+*The variable "body_camera" represents that news reports have indicated an officer was wearing a body camera and it may have recorded some portion of the incident. The variable "flee" represents if news reports have indicated the victim was moving away from officers, as well as if they were fleeing by car or by foot, or otherwise. The variable "armed" indicates that the victim was armed with some sort of implement that a police officer believed could inflict harm, as well as detailing what that implement was.*
+
+d. What are three weapons that you are surprised to find in the "armed" variable? Make a table of the values in "armed" to see the options.
+```{r}
+table(dat$armed)
+```
+
+*Even though only one was reported, I was surprised to see a bean-bag gun because I have no idea what that is (but it sounds interesting). I was also surprised by the spear and railroad spike reports, especially because those weapons seem very difficult to obtain in the 21st Century.*
+
+### Problem 2 (10 points)
+
+
+a. Describe the age distribution of the sample. Is this what you would expect to see?
+```{r}
+counts <- table(dat$age)
+hist(dat$age, main="Histogram of Age", xlab="Years", ylab="Frequency")
+```
+
+*The sample of ages is skewed right, with the highest frequency of reported age being between 20 and 40 years. I would expect to see this distribution because I expect most people that the police find threatening (and would have used force against) would have to be an age where they would be physically capable of injuring an officer or other people.*
+
+b. To understand the center of the age distribution, would you use a mean or a median, and why? Find the one you picked.
+```{r}
+summary(dat$age)
+```
+
+*Because our data is skewed, I would use a median to understand the center of the distribution, as a mean may be impacted by the data points that are on the right-hand side of the graph in a way that makes it seem like the center of the data is higher.  This is demonstrated by our summary, where we can see that the median is 35.00, and the mean is 37.12. In this case, the median age is 35.00.*
+
+c. Describe the gender distribution of the sample. Do you find this surprising?
+```{r}
+counts <- table(dat$gender)
+barplot(counts, main="Gender Distribution", xlab="Gender", names=c("Female", "Male", "Unknown"))
+```
+
+```{r}
+table(dat$gender)
+dat1 <- dat[dat$gender !="",]
+counts1 <- table(dat1$gender)
+barplot(counts1, main="Gender Distribution", xlab="Gender", names=c("Female", "Male"))
+```
+
+*It is clear from the first bar plot that most genders of individuals are unknown.  However, if we remove the individuals with unknown gender, we can see that most victims were male. This is not surprising, as to my knowledge most people who are victims of homicide in general are male, and police are also more likely to perceive males as threatening, which may mean they are more likely to use force against them.*
+
+
+### Problem 3 (10 points)
+
+a. How many police officers had a body camera, according to news reports? What proportion is this of all the incidents in the data? Are you surprised that it is so high or low?
+
+```{r}
+table(dat$body_camera)
+```
+
+*910 police had a body camera according to the news reports, and 5684 did not. Out of all incidents (6594), that would mean that only 13.8 percent of police had a body camera. I am not surprised that this is low, as body cameras are expensive, and also are only more recently becoming common.  Given that this data collection started in 2015, it may just be the case that most police districts do not mandate body cameras or do not have the funding to provide body cameras to all of their police officers.*
+
+b. In  how many of the incidents was the victim fleeing? What proportion is this of the total number of incidents in the data? Is this what you would expect?
+```{r}
+table(dat$flee)
+```
+
+*Because people were identified as fleeing both on foot and in a car, we can add 1058 and 845 to get a total number of incidents where the victim was fleeing: 1903.  While only 3952 people were marked as not fleeing, there are unknown values, as well as values marked "Other" that we cannot determine if they were fleeing or not.  So, the true number of people fleeing might be more than 1903, but we cannot tell what the other individuals did.  The proportion of those who fled compared to overall reports (aka including the "Other" reports, not just compared to those who did not flee) is 28.9 percent. This is a bit higher than I was expecting, because normally, I associate police shootings with police officers claiming self-defense.  However, almost 30% of people were fleeing the police officer at the time of the shooting, which seems like a very high number to me since police tend to claim that the victim was being aggressive and approaching them in a threatening way. However, it might make sense if police are trained to shoot individuals who are fleeing from a crime, but I don't have any knowledge of if police officers are trained to shoot in those situations.*
+
+
+
+### Problem 4 (10 points) -  Answer only one of these (a or b).
+
+a. Describe the relationship between the variables "body camera" and "flee" using a stacked barplot. What can you conclude from this relationship? 
+
+Hint 1: The categories along the x-axis are the options for "flee", each bar contains information about whether the police officer had a body camera (vertically), and the height along the y-axis shows the frequency of that category).
+
+Hint 2: Also, if you are unsure about the syntax for barplot, run ?barplot in R and see some examples at the bottom of the documentation. This is usually a good way to look up the syntax of R code. You can also Google it.
+
+
+```{r}
+
+tab.sexor <- table(dat$body_camera, dat$flee)
+barplot(tab.sexor,
+        main = "Comparing Fleeing Victims to Body Cam Rates",
+        xlab = "Did the Victim Flee?", ylab = "Frequency",
+        legend.text = c("No Body Cam", "Body Cam"), xlim = c(0,10), ylim = c(0,5000),
+        beside = FALSE)
+
+```
+
+*First, it is important to note that there were many incidents of police shootings where we are unsure if the victim fled or not, and those columns without a label or labeled "Other" are reflecting those incidents. Even though the "other" column might represent people who fled in a different way than by car or by foot, the codebook does not specify, so I will just consider those values to have unknown significance. Even though it is very clear that most police officers did not have body cameras, it looks like there is a higher level of body cameras involved in incidents where people don't flee as compared to the incidents when people do flee (i.e. by car or by foot).  We could conclude many things from this observation, one of which being that police are more likely to accurately report that the victim was not fleeing if there was video evidence.  However, it may also be the case that in situations where police have to chase people who are fleeing, they are not wearing body cameras.  Overall, I hesitate to conclude anything about the direct relationship between these variables, but I can say that it looks apparent that there was a higher rate of body cameras among the police officers that shot people who were not fleeing.*
+
+b. Describe the relationship between age and race by using a boxplot. What can you conclude from this relationship? 
+
+Hint 1: The categories along the x-axis are the race categories and the height along the y-axis is age. 
+
+Hint 2: Also, if you are unsure about the syntax for boxplot, run ?boxplot in R and see some examples at the bottom of the documentation. This is usually a good way to look up the syntax of R code. You can also Google it.
+
+
+```{r}
+
+```
+
+*N/A.*
+
+
+
+
+
+
+### Extra credit (10 points)
+
+a. What does this code tell us? 
+
+```{r, eval=FALSE}
+mydates <- as.Date(dat$date)
+head(mydates)
+(mydates[length(mydates)] - mydates[1])
+?length
+```
+
+*This code tells us a few things.  The first line tells r not to evaluate this r chunk, which is helpful especially as this extra credit question is not involving the data that we are currently using for our other problems. The second line tells us to make a new data frame called mydates, and to interpret values from the date column in dat as calendar dates rather than normal character representations. The third line tells r to read the first few entries of the data frame mydates.  The fourth line tells r to set the length of mydates to a certain value.*
+
+b. On Friday, a new report was published that was described as follows by The Guardian: "More than half of US police killings are mislabelled or not reported, study finds." Without reading this article now (due to limited time), why do you think police killings might be mislabeled or underreported?
+
+*The dataset we were given was only measuring the number and types of police killings that were both shootings as well as reported in the news. Because the Washington Post data that we used was only based on news reports, it is likely that there are many police killings that are not published in the news. Therefore, because it may be hard to access police reports in order to get a more complete idea of the incidents that happen, police killings may be underreported. Additionally, police shootings may be mislabeled because oftentimes police are the only people who have a complete record of what occured at a scene, and police are probably unwilling to accurately report what happened in order to avoid punitive measures. Especialy given that so many people do not have body cameras, police may be lying about what happened in order to avoid losing their job or other criminal implications.*
+
+c. Regarding missing values in problem 4, do you see any? If so, do you think that's all that's missing from the data?
+
+*For problem 4 I selected a barplot of flee and body-cameras. There were a bunch of missing values in the flee category, their flee status could have been in a way other than by car or by foot, and there were also people who simply did not have any value entered in the flee category.  It is unlikley that that's all that is missing from the data - because this data was collected from news articles, and not all news reporters are mandated to report on every single variable that the researchers were tracking, I am sure that there were other missing values. There were also unknown genders that we had to remove from the data set earlier in another problem, which indicates that there is absolutely more missing data in this set.  Despite this fact, it is still good to collect this type of data so that we can analyze it.*
+
+
 
 
 $$\\[2in]$$
