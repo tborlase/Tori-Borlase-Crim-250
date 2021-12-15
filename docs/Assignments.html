@@ -1358,6 +1358,308 @@ bar + coord_flip()</code></pre>
 <pre class="r"><code># ggplot(mpg, aes(displ, hwy)) + geom_point()
 # ggsave(&#39;my-plot.pdf&#39;) &gt; Saving 7 x 4.33 in image</code></pre>
 <p><em>These lines describe how to save my plots.</em></p>
+</div>
+</div>
+<div id="exam-2" class="section level1">
+<h1>Exam 2</h1>
+<div id="instructions" class="section level3">
+<h3>Instructions</h3>
+<ol style="list-style-type: lower-alpha">
+<li><p>Create a folder in your computer (a good place would be under Crim 250, Exams).</p></li>
+<li><p>Download the dataset from the Canvas website (sim.data.csv) onto that folder, and save your Exam 2.Rmd file in the same folder.</p></li>
+<li><p>Data description: This dataset provides (simulated) data about 200 police departments in one year. It contains information about the funding received by the department as well as incidents of police brutality. Suppose this dataset (sim.data.csv) was collected by researchers to answer this question: <strong>“Does having more funding in a police department lead to fewer incidents of police brutality?”</strong></p></li>
+<li><p>Codebook:</p></li>
+</ol>
+<ul>
+<li>funds: How much funding the police department received in that year in millions of dollars.</li>
+<li>po.brut: How many incidents of police brutality were reported by the department that year.</li>
+<li>po.dept.code: Police department code</li>
+</ul>
+</div>
+<div id="problem-1-eda-10-points" class="section level3">
+<h3>Problem 1: EDA (10 points)</h3>
+<p>Describe the dataset and variables. Perform exploratory data analysis for the two variables of interest: funds and po.brut.</p>
+<pre class="r"><code>dat &lt;- read.csv(file = &quot;sim.data.csv&quot;)
+names(dat)</code></pre>
+<pre><code>## [1] &quot;po.dept.code&quot; &quot;funds&quot;        &quot;po.brut&quot;</code></pre>
+<pre class="r"><code>summary(dat)</code></pre>
+<pre><code>##   po.dept.code        funds          po.brut     
+##  Min.   :  1.00   Min.   :21.40   Min.   : 0.00  
+##  1st Qu.: 50.75   1st Qu.:51.67   1st Qu.:14.00  
+##  Median :100.50   Median :59.75   Median :19.00  
+##  Mean   :100.50   Mean   :61.04   Mean   :18.14  
+##  3rd Qu.:150.25   3rd Qu.:72.17   3rd Qu.:22.00  
+##  Max.   :200.00   Max.   :99.70   Max.   :29.00</code></pre>
+<pre class="r"><code>hist(dat$funds, main = &quot;Histogram of funds&quot;, xlab = &quot;Funding in Millions&quot;,
+    ylab = &quot;Frequency&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
+<pre class="r"><code>hist(dat$po.brut, main = &quot;Histogram of Police Brutality Incidents&quot;,
+    xlab = &quot;Number of Incidents&quot;, ylab = &quot;Frequency&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-123-2.png" width="672" /></p>
+<p><em>This dataset contains 200 observations and three variables. The first variable of interest is funds. This variable describes how much funding a police department received in that year in millions of dollars. The median for funds is 59.75. The mean for funds is 61.04. The first and third quartiles are 51.67 and 72.17, respectively. The second variable of interest is po.brut. This variable describes how many incidents of police brutality were reported by a police department that year. The median for po.brut is 19.00. The mean is 18.14. The first and third quartiles are 14.00 and 22.00, respectively.</em></p>
+</div>
+<div id="problem-2-linear-regression-30-points" class="section level3">
+<h3>Problem 2: Linear regression (30 points)</h3>
+<ol style="list-style-type: lower-alpha">
+<li>Perform a simple linear regression to answer the question of interest. To do this, name your linear model “reg.output” and write the summary of the regression by using “summary(reg.output)”.</li>
+</ol>
+<pre class="r"><code>reg.output &lt;- lm(formula = po.brut ~ funds, data = dat)
+(summary(reg.output))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = po.brut ~ funds, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.9433 -0.2233  0.2544  0.5952  1.1803 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 40.543069   0.282503  143.51   &lt;2e-16 ***
+## funds       -0.367099   0.004496  -81.64   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9464 on 198 degrees of freedom
+## Multiple R-squared:  0.9712, Adjusted R-squared:  0.971 
+## F-statistic:  6666 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Report the estimated coefficient, standard error, and p-value of the slope. Is the relationship between funds and incidents statistically significant? Explain.</li>
+</ol>
+<p><em>Estimated coefficient: -0.367099. Standard error: 0.004496. P value: approximately 0 (&lt;2e-16). This relationship is statistically significant at the .05 level, as the p-value is lower than the .05 significance level, which means that it is unlikely we will observe a relationship between the funds and brutality due to chance.</em></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Draw a scatterplot of po.brut (y-axis) and funds (x-axis). Right below your plot command, use abline to draw the fitted regression line, like this:</li>
+</ol>
+<pre class="r"><code># Remember to remove eval=FALSE!!
+plot(dat$funds, dat$po.brut, main = &quot;Relationship between Funds and Police Brutality&quot;,
+    xlab = &quot;Funds in Millions&quot;, ylab = &quot;Number of Brutality Incidents&quot;)
+abline(reg.output, col = &quot;red&quot;, lwd = 2)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-125-1.png" width="384" /> Does the line look like a good fit? Why or why not?</p>
+<p><em>The line does not appear to be a good fit because the data appears to be curved, with the front and end of the data curving away from the line. Because we preform our initial linear regressions with the assumption that the relationship will be linear, we cannot say that this line is a good fit, as the data may have a non-linear relationship.</em></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Are the four assumptions of linear regression satisfied? To answer this, draw the relevant plots. (Write a maximum of one sentence per assumption.) If not, what might you try to do to improve this (if you had more time)?</li>
+</ol>
+<pre class="r"><code>plot(reg.output, which = 1)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<p><em>Assumption 1: Linearity. This assumption is not satisfied because the line representing average value of the residuals at each value of fitted value looks relatively curved, and there is an observable non-linear trend.</em></p>
+<pre class="r"><code>plot(dat$funds, reg.output$residuals, ylim = c(-5, 3), main = &quot;Residuals vs. x&quot;,
+    xlab = &quot;x, Funds&quot;, ylab = &quot;Residuals&quot;)
+abline(h = 0, lty = &quot;dashed&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p><em>Assumption 2: Independence. Based on our plots, this assumption is not satisfied because there are some apparent patterns in the residuals plot. We can observe what appears to be a curved, consistent shape in the data, almost creating a pattern. While the independence assumption cannot be tested, this plot is a good way to see if there may be a relationship between the two variables that makes them dependent. We should be hesitant to assume that the variables are independent.</em></p>
+<pre class="r"><code>plot(reg.output, which = 3)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+<p><em>Assumption 3: Homoscedasticity. There appears to be patterns in variability of x and y, and the scale-location plot above does not result in a flat line, meaning residuals have non-constant variance. Therefore, the assumption that all the errors have the same variance does not appear to be true.</em></p>
+<pre class="r"><code>plot(reg.output, which = 2)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-129-1.png" width="672" /></p>
+<p><em>Assumption 4: Normal Population. The values in the QQ plot appear to show a curved trend, which means that the data may have a left skew compared to a normal distribution, so this condition is not satisfied.</em></p>
+<p><em>In order to “improve” the data, I would attempt to transform the data. Because of the failed assumption tests, it may be necessary to do data transformations in order to properly interpret the relationship between funds and police brutality. This may involve the Box-Cox method, or logging/re-scaling the data in some way. Once I do the necessary transformations, I will interpret the results of that analysis and will be able to more effectively determine the relationship between the two variables of interest.</em></p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Answer the question of interest based on your analysis.</li>
+</ol>
+<p><em>The question of interest was: Does having more funding in a police department lead to fewer incidents of police brutality? With my current analysis, I would be unable to determine if increasing funding causes fewer incidents of police brutality. Because of the numerous failed assumptions tests in our analysis, it is hard to determine if any apparent slope or relationship is actually a linear relationship, even though our initial plot looked promising. Additionally, even if all of the assumptions were fulfilled, and we eventually had a transformed the data, it would still be inappropriate to answer a causal question with data that only gives insight to correlation. There may be an additional, third factor that influences both of our variables of interest, or the relationship between funding and brutality may be reverse-causal (i.e. police officers receive more funding when they are not under scrutiny after police brutality incidents).</em></p>
+</div>
+<div id="problem-3-data-ethics-10-points" class="section level3">
+<h3>Problem 3: Data ethics (10 points)</h3>
+<p>Describe the dataset. Considering our lecture on data ethics, what concerns do you have about the dataset? Once you perform your analysis to answer the question of interest using this dataset, what concerns might you have about the results?</p>
+<p><em>The dataset is comprised of the funding and police brutality information about 200 different police departments. Given that for police brutality reports, the departments were the ones reporting the data, rather than an external source collecting information about the departments, there may be cause for concern, as police departments my significantly underreport their brutality incidents in order to avoid scrutiny. Because it is unclear where this data is from, and how it was collected, I would be a bit hesitant to draw any conclusions about this data, especially given that there are opportunities for sampling bias and the population of police departments that were surveyed may have been sampled in a misleading way (i.e. if the individual collecting the data did not select departments randomly within the population but rather picked police departments that they knew would have certain influence on the data). Additionally, once I have preformed analysis in order to answer the question of interest, I would still be concerned that providing an answer to a causal question based on correlative evidence may lead to unethical policy implications. Because, at the outset, it appeared that the relationship between funding and police brutality had a negative correlation, it might be easy to jump to conclusions and tell policymakers that increasing funding for all police departments can help “solve” the problem of police brutality. However, because we cannot be sure that manipulating funding will cause changes in brutality, and we also cannot be sure that increasing funding will cause a decrease in brutality rather than some other affect (given that the untransformed data fails many of the tests). And, as I said before, there may be a third variable that influences the apparent correlation, or the variables may have a reverse-causal relationship, both of which would mean that the implications of this data could be misleading. Overall, I would have to do more research about the sources of this data, and more analysis before feeling confident.</em></p>
+</div>
+</div>
+<div id="final-project" class="section level1">
+<h1>Final Project</h1>
+<p>Investigating the Relationship Between Political Leaning and the Type/Frequency of Criminal Activity on University Campuses Across the United States</p>
+<p>Theodora Athanitis, Tori Borlase, Halle Wasser CRIM 250: Statistics for the Social Sciences Dr. Maria Cuellar December 12, 2021</p>
+<div id="research-motivation-and-question" class="section level3">
+<h3>Research Motivation and Question</h3>
+<p>As college students, the topic of crime on campus is very relevant to us in terms of public safety. Additionally, as all three of us are female students, certain crime types such as those of a violent or sexual nature feel more relevant and concerning. As recent articles in the Daily Pennsylvanian discuss, crime and crime reporting have become more salient to students as classes move back in-person (Perlman, 2021). In light of the return to campus, we feel as though students should be aware of the rates and types of crimes that are most frequent, as well as the factors that impact crime rates on college campuses. Additionally, some studies show that peoples’ perceptions of crime differ depending on their political leanings (Gramlich, 2016). Therefore, our research question is as follows: Does the political leaning (Democratic or Republican) of states affect either the crime type or the frequency of criminal activity on the campuses of public universities in that state? Our question and dataset are interesting because we can 1) help students be more aware of crimes that are highly relevant to them and 2) test whether there is a correlation between political beliefs and actual reported crime, or if future research is necessary to determine if the disparities between crime perceptions are due to other factors. With our analysis, we should be able to shed light on our research question as well as help improve our understanding of topics that are particularly relevant to us. Our hypothesis is that, in states with Republican political leanings, crime will be higher because Republican states may place a greater emphasis on policing and dedicate more resources to monitoring crime.</p>
+</div>
+<div id="exploratory-data-analysis" class="section level3">
+<h3>Exploratory Data Analysis</h3>
+<p><em>Description of the Dataset</em></p>
+<p>The UCR Table 9 dataset (“Offenses Known to Law Enforcement by State by University and College”, 2019) is a voluntary reporting collection composed of 569 observations on 14 variables. The variables in the dataset are: state, university.college, Campus, student.enrollment, violent.crime, murder, rape, robbery, aggravated.assault, property.crime, burglary, larceny.theft, motor.vehicle.theft, and arson (please refer to Appendix A for the codebook), with each observation corresponding to an in-state university or college. It is important to note that these observations were not evenly distributed across states; rather, some states had observations for only one in-state university, while others had observations for more than 5.</p>
+<p><em>Missing Values</em></p>
+<p>Within the dataset, there were many missing values for the “arson” variable. This may be because it is a relatively uncommon crime on college campuses; while some institutions chose to denote a lack of arson with “0”, others may have chosen to simply not report a value. There were four states that were not included in the dataset (namely, Alabama, Idaho, Hawaii, and Oregon) because they either did not release complete 12 month data or they did not release any data at all.</p>
+<p><em>Additional Data</em></p>
+<p>For our analysis, we created several new tables to create our EDA plots and to utilize for our linear regressions. The table used for the majority of our analysis is composed of 46 observations on 13 variables, with each observation representing the states with reported data (omitting Alabama, Idaho, Hawaii, and Oregon). The added variables in these datasets are state.leaning (a binary variable that represents the political affiliation the state had in the 2016 presidential election; 0=democratic and 1= republican) and total (an integer variable that is the summation of all crimes committed in the state; i.e., the sum of all crimes in all participating in-state institutions within a state).</p>
+<p>Load the data.</p>
+<pre class="r"><code>library(readr)
+library(knitr)
+setwd(&quot;/Users/toriborlase/Desktop/University of Pennsylvania/Fall 2021/CRIM 250/Tori-Borlase-Crim-250&quot;)
+dat &lt;- read.csv(file = &quot;FinalProjectData.csv&quot;)
+dat5 &lt;- read.csv(file = &quot;FinalProjectData5.csv&quot;)</code></pre>
+<p><em>Breakdown of Political Leaning</em></p>
+<p>Within the UCR Dataset, and of the 46 states that reported data about crime on college campuses, we found that a majority were Republican as determined by the 2016 election results. With 28 Republican states and only 18 Democratic ones, this discrepancy is an important consideration given that our analysis compares the differences in crime rates between these two categories of states on average. This means that a smaller number of states skews the average number of crimes generated during the regression analysis significantly, despite relative consistencies in the number of colleges/populations on average between the two political affiliations. The takeaway of this plot is that there were more Republican states than Democratic states reporting; therefore, we should be cognizant that our conclusions may reflect this disparity.</p>
+<pre class="r"><code>y = data.frame(Political_Leaning = c(&quot;Republican&quot;, &quot;Democratic&quot;),
+    Number = c(28, 18))
+colours = c(&quot;red&quot;, &quot;blue&quot;)
+w &lt;- c(0.05, 0.05)
+barplot(y$Number, width = w, main = &quot;Number of Democratic and Republican
+States in the UCR Dataset&quot;,
+    ylab = &quot;Number of States Represented in the UCR Dataset&quot;,
+    xlab = &quot;State Political Affiliation&quot;, names.arg = y$Political_Leaning,
+    col = colours, ylim = c(0, 30))</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-131-1.png" width="403.2" /></p>
+<p>Figure 1. Bar Graph of the Number of Democratic and Republican States in the UCR Table 9 Dataset.</p>
+<p><em>Frequencies of Crime Types</em></p>
+<pre><code>The following bar graph shows the frequencies of different types of crimes reported in both Democratic and Republican states. As shown in Figure 2, there were more crimes in Republican states for all but one category of crime (aggravated assault). However, we should keep in mind that there were significantly more Republican states that reported crime data to the UCR, and that our dataset did not contain information about the population of states, therefore it is difficult to contextualize these results. Based on these differences, we might expect that our model and causal analysis will show that Republican states have higher amounts of crime.</code></pre>
+<pre class="r"><code>counts5 &lt;- t(as.matrix(dat5[-1]))
+counts5</code></pre>
+<pre><code>##    [,1] [,2]  [,3]  [,4] [,5] [,6]  [,7] [,8] [,9] [,10]
+## X0 1420  214 47092 22796    2  736 20223 1837   82   646
+## X1 1481  211 52346 25404    5  957 22423 2028   58     5</code></pre>
+<pre class="r"><code>colnames(counts5) &lt;- dat5$crime_type
+colours = c(&quot;blue&quot;, &quot;red&quot;)
+barplot(counts5, main = &quot;Frequency of Crime Type by Political Leaning&quot;,
+    ylab = &quot;Count of Criminal Offenses&quot;, xlab = &quot;Crime Type&quot;,
+    beside = TRUE, col = colours, ylim = c(0, max(counts5) *
+        1))
+
+legend(&quot;topright&quot;, fill = colours, legend = c(&quot;Democratic States&quot;,
+    &quot;Republican States&quot;))</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-132-1.png" width="1440" /> Figure 2. Bar graph of the number and type of crimes at college campuses in Democratic and Republican states.</p>
+</div>
+<div id="modeling-the-data" class="section level3">
+<h3>Modeling the Data</h3>
+<p>As a preliminary step in assessing the relationship between the total crime variable and the binary state.leaning variable, we first found the correlation between the two variables to be -0.1245639.</p>
+<pre class="r"><code># Correlation between Crime and Political Affiliation
+cor(dat$State.Leaning, dat$Total)</code></pre>
+<pre><code>## [1] -0.1245639</code></pre>
+<p>Despite this negative result, we further explored this relationship by regressing total crime on state.leaning. This analysis found that the average number of crimes on college campuses annually is 5280 total crimes Democratic States and 3767 in Republican States. However, we also found that both the equal variance assumption and the normal population assumption were not met, therefore invalidating this model to assess this relationship with the data in its current form (refer to Appendix B for diagnostic plots).</p>
+<pre class="r"><code># Total Crime Regression
+reg.output &lt;- lm(dat$Total ~ dat$State.Leaning, data = dat)
+summary(reg.output)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = dat$Total ~ dat$State.Leaning, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4901.4 -3097.1 -1587.2   698.5 30250.6 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)           5280       1417   3.726 0.000551 ***
+## dat$State.Leaning    -1513       1816  -0.833 0.409484    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6012 on 44 degrees of freedom
+## Multiple R-squared:  0.01552,    Adjusted R-squared:  -0.006858 
+## F-statistic: 0.6935 on 1 and 44 DF,  p-value: 0.4095</code></pre>
+<pre class="r"><code>plot(reg.output)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-1.png" width="576" /><img src="Assignments_files/figure-html/unnamed-chunk-134-2.png" width="576" /><img src="Assignments_files/figure-html/unnamed-chunk-134-3.png" width="576" /><img src="Assignments_files/figure-html/unnamed-chunk-134-4.png" width="576" /></p>
+<pre class="r"><code># Linearity Assumption:
+plot(dat$State.Leaning, reg.output$residuals, main = &quot;Residuals vs. x&quot;,
+    xlab = &quot;x, Political Leaning&quot;, ylab = &quot;Residuals&quot;)
+abline(h = 0, lty = &quot;dashed&quot;)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-5.png" width="576" /></p>
+<pre class="r"><code>plot(reg.output, which = 1)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-6.png" width="576" /></p>
+<pre class="r"><code># Independence Assumption: using Residuals vs. x plotted
+# above
+plot(dat$State.Leaning, dat$Total, main = &quot;Relationship between crime and political leaning&quot;,
+    xlab = &quot;Political Leaning&quot;, ylab = &quot;Number of criminal offences&quot;)
+abline(reg.output, col = &quot;red&quot;, lwd = 2)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-7.png" width="576" /></p>
+<pre class="r"><code># Equal Variance Assumption/ Homoscedasticity:
+plot(reg.output, which = 3)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-8.png" width="576" /></p>
+<pre class="r"><code># Normal Population Assumption:
+plot(reg.output, which = 2)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-9.png" width="576" /></p>
+<pre class="r"><code>plot(reg.output, which = 5)</code></pre>
+<p><img src="Assignments_files/figure-html/unnamed-chunk-134-10.png" width="576" /></p>
+<p>Linearity Assumption: This assumption is met. The residuals vs. x plot has a horizontal direction and does have a significant pattern in the data. Furthermore, the residuals vs fitted plot is fairly horizontal and flat, meaning that there is no discernible non-linear trend to the residuals.</p>
+<p>Independence Assumption: This assumption is also met for the same reason as the linearity assumption as the residuals vs. x plot has a horizontal direction and does have a significant pattern in the data, as well as because there does not seem to be a time-series component to the data.</p>
+<p>Equal Variance Assumption/ Homoscedasticity: This assumption is not met. The scatter plot of crimes vs. political affiliation has no variations with shrinkage in the plot. Additionally, there are significant negative trends, based on the size of the data, shown by the line in the scale-location plot showing that the errors do not have a constant variance.</p>
+<p>Normal Population Assumption: This assumption is not met since the q-q plot has significant left skew deviations and is heavy-tailed for the values in this plot.</p>
+<p>As these assumptions are not met, normally the next step would be to use the box-cox method to find the best transformation for this data, transform the x variable, and repeat this process. However, as the p-value was so large at 0.4095, demonstrating that this relationship is not statistically significant, we instead concluded that we cannot reject the null hypothesis and instead explored whether or not this relationship existed for a particular crime type variable.</p>
+<p>For the rape and violent crime regression it was found that the average number of rapes on college campuses in Democratic states is 2616.2 and 1868.5 in Republican states, and the average number of violent crimes in Democratic states is 78.89 and 52.89 for Republican states. Unfortunately, the two variables that we explored also had significant p-values of 0.4116 and 0.2967, respectively, and we therefore concluded that we cannot reject the null hypothesis for these individual variables either.</p>
+<pre class="r"><code># Rape regression
+reg.output1 &lt;- lm(dat$Rape ~ dat$State.Leaning, data = dat)
+summary(reg.output1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = dat$Rape ~ dat$State.Leaning, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2427.2 -1536.8  -780.4   348.2 14986.8 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         2616.2      702.8   3.723 0.000557 ***
+## dat$State.Leaning   -746.7      900.8  -0.829 0.411605    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2982 on 44 degrees of freedom
+## Multiple R-squared:  0.01538,    Adjusted R-squared:  -0.007001 
+## F-statistic: 0.6872 on 1 and 44 DF,  p-value: 0.4116</code></pre>
+<pre class="r"><code># Violent Crime Regression
+reg.output2 &lt;- lm(dat$Violent.crime ~ dat$State.Leaning, data = dat)
+summary(reg.output2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = dat$Violent.crime ~ dat$State.Leaning, data = dat)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -77.89 -46.64 -19.39  31.11 417.11 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          78.89      19.20   4.108 0.000171 ***
+## dat$State.Leaning   -26.00      24.62  -1.056 0.296690    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 81.48 on 44 degrees of freedom
+## Multiple R-squared:  0.02472,    Adjusted R-squared:  0.002556 
+## F-statistic: 1.115 on 1 and 44 DF,  p-value: 0.2967</code></pre>
+<p>While this analysis does not show a relationship between crime frequency on college campuses and the political affiliation of the state in which it is located, this relationship may exist in an indirect fashion and is not represented in this dataset due to other causal factors that we will discuss in the following sections.</p>
+</div>
+<div id="causal-analysis" class="section level3">
+<h3>Causal Analysis</h3>
+<p><em>Causal Factors</em></p>
+<p>As a reminder, our question of interest was if there was a relationship between state political leaning and crime on college campuses. We selected to not conduct a causal analysis given our low p-values in our regression analysis, especially because many other factors could cause crime to increase or decrease, and we are unable to answer a causal question with observational data. There may be other causal mediators that could change crime on college campuses other than a direct effect of the political leanings of the state in which the college is located. As seen in our DAG below, while there may be a direct relationship between our main variables of interest, political affiliations may also impact police funding, social program funding, reporting standards, and open carry laws (to name a few), which may in turn be the true cause of different crimes and their frequencies. The DAG below shows those relationships, and especially given our low p-values, we should be cautious in making any causal assessments for our specific research question.</p>
+<p>Figure 3. Directed Acyclic Graph of the relationship between state political party affiliation, crime type and frequency on campus, and other intermediary factors. <strong>Note: DAG is in our final project on Canvas</strong></p>
+</div>
+<div id="final-discussion" class="section level3">
+<h3>Final Discussion</h3>
+<p>Overall, our regression analysis failed all but two of the assumption tests as well as returning relatively high p-values. We are unable to reject the null hypothesis that political affiliation of states has no impact on the crime type or frequency on college campuses. When analyzing our DAG, it is important to consider which internal nodes have causal effects and the degree to which these nodes influence the potential for a causal relationship. Although our analysis may suggest that there is no causal relationship between our variables of interest, it is clear that the relationship might still exist. In order to reach a conclusion, a discussion of our method’s limitations is warranted, as well as future research suggestions to avoid similar issues.</p>
+<p><em>Limitations</em></p>
+<p>Along with the limitations discussed above regarding the incomplete reporting data and the inclusion of more Republican states, there are other key limitations that need to be addressed. Firstly, California and Texas were significant outliers given that they not only had the most in-state institutions voluntarily report but the institutions within these states also had larger student enrollments. Given that our regression analysis results show the number of crimes on average, any state/institution with a larger student enrollment would skew the average for each state, shifting the representative sample of the states within each political affiliation group. Another limitation of our method is that we only utilized 2016 election results to assign political alignment rather than placing the state on a spectrum of the percentage of votes for a certain party. Because of this, the state.leaning variable was binary, which might explain why our linear regression model did not satisfy any of the assumptions. While one might question why we chose to keep this variable as binary, rather than switching to a spectrum before completing our analysis, the existence of swing states would have made it difficult to analyze the results. If states were hovering near 50%, it would be difficult to determine the influence of political affiliation on perceptions of crime and policing.</p>
+<p><em>Future Research Recommendations</em></p>
+<p>Although the results of our analysis suggest that a state’s political leaning does not influence the type of frequency of crime on in-state university campuses, this determination is far from sufficient to rule out the possibility of relationship. Based on our study’s limitations, it would be beneficial to analyze three different categories of states: (1) Republican stronghold states, (2) Democratic stronghold states, and (3) swing states. This political breakdown, along with a discussion of the changes in crime rates on college campuses within these states for the year directly following an election may better explain the relationship between political affiliation and crime type and frequency of in-state institutions. Another suggestion would be standardizing the data points collected by looking at crime rates per capita and including population and campus size information such that we are able to compare universities of equal student-enrollment. In other words, data points need to be standardized in order to control for confounding variables, such as the environment (urban vs. rural campus, the campus having its own police force, etc.). Lastly, we would suggest utilizing the campus’ political leaning, rather than the political leaning of the state where the college is located given that these political leanings may conflict, especially in swing states. These method recommendations lend themselves to better answer the research question of interest.</p>
+<p><em>Concluding Remarks</em></p>
+<p>In conclusion, our data analysis showed that there was no statistically significant correlation between state political leaning and crime types and frequencies on college campuses. Given that our data was observational, we were unable to conduct a proper causal analysis, and we hope that future research in this field can further explore both correlation and causal relationships between our two variables of interest.</p>
+</div>
+<div id="references" class="section level3">
+<h3>References</h3>
+<p>Federal Bureau of Investigation. (2019). 2019 Crime in the United States: Table 9, Offenses Known to Law Enforcement by State by University and College, 2019. U.S. Department of Justice FBI: UCR. <a href="https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/topic-pages/tables/table-9/table-9.xls/view" class="uri">https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/topic-pages/tables/table-9/table-9.xls/view</a>.</p>
+<p>Gramlich, J. (2016, November 16). Voters’ perceptions of crime continue to conflict with reality. Pew Research Center. <a href="https://www.pewresearch.org/fact-tank/2016/11/16/voters-perceptions-of-crime-continue-to-conflict-with-reality/" class="uri">https://www.pewresearch.org/fact-tank/2016/11/16/voters-perceptions-of-crime-continue-to-conflict-with-reality/</a>.</p>
+<p>Perlman, L. (2021, November 4). 3 crimes, 0 alerts: A look into Penn’s crime reporting system. The Daily Pennsylvanian. <a href="https://www.thedp.com/article/2021/11/penn-alerts-clery-crimes-reporting-system" class="uri">https://www.thedp.com/article/2021/11/penn-alerts-clery-crimes-reporting-system</a>.</p>
+</div>
+<div id="appendix-a" class="section level3">
+<h3>Appendix A</h3>
+<p>Codebook: Variable Names and Relevant Definitions</p>
+<pre class="r"><code># state Full name of the state where the college campus is
+# located university.college Full name of college or
+# university Campus Individual campus name where
+# applicable- ex. California State University
+# ‘Bakersfield’, if inapplicable a # value of N/A is
+# inputted student.enrollment Integer variable based on
+# 2018 United States Department of Education enrollment
+# reports that includes both undergraduate and graduate
+# populations where applicable</code></pre>
+<p>The following variables are based on the local definition of the crime in the given jurisdiction- the only exceptions are included below.</p>
+<pre class="r"><code># violent.crime murder This variable includes both murder
+# and non-negligent manslaughter rape This definition is
+# based on the 2017 UCR revised defintion of rape that
+# removes the variable of ‘forcible’ from the
+# classification robbery aggravated.assault property.crime
+# burglary larceny.theft motor.vehicle.theft arson</code></pre>
 <p><span class="math display">\[\\[2in]\]</span></p>
 </div>
 </div>
